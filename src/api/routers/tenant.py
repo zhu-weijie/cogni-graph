@@ -2,18 +2,10 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from src.api import schemas
+from src.api.deps import get_db
 from src.core.services import tenant_service
-from src.data.database import SessionLocal
 
 router = APIRouter()
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 @router.post("/tenants", response_model=schemas.Tenant, status_code=201)
