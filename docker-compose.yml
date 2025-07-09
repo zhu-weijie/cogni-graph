@@ -10,7 +10,8 @@ services:
       sh -c "alembic upgrade head &&
              uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       - DATABASE_URL=postgresql://user:password@db:5432/cogni_graph_db
 
@@ -24,6 +25,11 @@ services:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=cogni_graph_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d cogni_graph_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data:
