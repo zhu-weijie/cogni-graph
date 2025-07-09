@@ -15,10 +15,10 @@ services:
       db:
         condition: service_healthy
     environment:
-      - DATABASE_URL=postgresql://user:password@db:5432/cogni_graph_db
+      - DATABASE_URL=postgresql+psycopg://user:password@db:5432/cogni_graph_db
 
   db:
-    image: postgres:16-alpine
+    image: pgvector/pgvector:pg16
     ports:
       - "5432:5432"
     volumes:
