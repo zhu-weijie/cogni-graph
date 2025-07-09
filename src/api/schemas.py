@@ -15,3 +15,19 @@ class Tenant(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class QueryRequest(BaseModel):
+    query: str
+
+
+class DocumentChunk(BaseModel):
+    page_content: str
+    metadata: dict
+
+    class Config:
+        from_attributes = True
+
+
+class RetrievalResponse(BaseModel):
+    retrieved_chunks: list[DocumentChunk]
