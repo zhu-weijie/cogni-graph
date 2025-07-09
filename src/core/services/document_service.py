@@ -1,5 +1,6 @@
 import fitz
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_core.documents import Document
 
 from src.data.vector_store import vector_store
 
@@ -30,3 +31,10 @@ def chunk_and_store_text(text: str, tenant_id: str, doc_id: str):
         metadatas=[{"tenant_id": tenant_id, "doc_id": doc_id} for _ in chunks],
     )
     return len(chunks)
+
+
+def search_documents(query: str, tenant_id: str) -> list[Document]:
+    results = vector_store.similarity_search(
+        query=query, filter={"tenant_id": tenant_id}
+    )
+    return results
