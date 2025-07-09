@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from src.api import schemas
 from src.api.deps import get_db
-from src.core.services import tenant_service
+from src.core.services import document_service, tenant_service
 
 router = APIRouter()
 
@@ -34,9 +34,11 @@ def upload_document_for_tenant(
     with open(temp_file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
+    extracted_text = document_service.extract_text_from_pdf(temp_file_path)
+
     return {
         "filename": file.filename,
-        "content_type": file.content_type,
         "tenant_id": tenant.id,
-        "info": f"File saved to {temp_file_path}",
+        "extracted_characters": len(extracted_text),
+        "extracted_text_preview": extracted_text[:200] + "...",
     }
