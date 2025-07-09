@@ -1,5 +1,7 @@
 FROM python:3.12-slim AS base
 
+RUN apt-get update && apt-get install -y postgresql-client
+
 WORKDIR /app
 
 ENV PYTHONDONTWRITEBYTECODE=1
