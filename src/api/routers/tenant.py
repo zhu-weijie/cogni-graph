@@ -36,9 +36,12 @@ def upload_document_for_tenant(
 
     extracted_text = document_service.extract_text_from_pdf(temp_file_path)
 
+    num_chunks = document_service.chunk_and_store_text(
+        text=extracted_text, tenant_id=str(tenant.id), doc_id=file.filename
+    )
+
     return {
         "filename": file.filename,
         "tenant_id": tenant.id,
-        "extracted_characters": len(extracted_text),
-        "extracted_text_preview": extracted_text[:200] + "...",
+        "num_chunks_stored": num_chunks,
     }
