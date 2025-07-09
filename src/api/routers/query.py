@@ -7,14 +7,13 @@ from src.api import schemas
 from src.api.deps import get_db
 from src.core.services import document_service, tenant_service
 
-router = APIRouter()
-
-
-@router.post(
-    "/tenants/{tenant_id}/query/retrieve",
-    response_model=schemas.RetrievalResponse,
+router = APIRouter(
+    prefix="/tenants/{tenant_id}/query",
     tags=["Query"],
 )
+
+
+@router.post("/retrieve", response_model=schemas.RetrievalResponse)
 def retrieve_documents_for_query(
     tenant_id: uuid.UUID, request: schemas.QueryRequest, db: Session = Depends(get_db)
 ):

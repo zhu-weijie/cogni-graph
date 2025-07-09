@@ -1,6 +1,5 @@
 import shutil
 import uuid
-from typing import List
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
@@ -9,20 +8,23 @@ from src.api import schemas
 from src.api.deps import get_db
 from src.core.services import document_service, tenant_service
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/tenants",
+    tags=["Tenants"],
+)
 
 
-@router.get("/tenants", response_model=List[schemas.Tenant])
+@router.get("/")
 def read_tenants(db: Session = Depends(get_db)):
     return tenant_service.get_tenants(db=db)
 
 
-@router.post("/tenants", response_model=schemas.Tenant, status_code=201)
+@router.post("/", status_code=201)
 def create_new_tenant(tenant: schemas.TenantCreate, db: Session = Depends(get_db)):
     return tenant_service.create_tenant(db=db, tenant=tenant)
 
 
-@router.post("/tenants/{tenant_id}/upload", tags=["Documents"])
+@router.post("/{tenant_id}/upload")
 def upload_document_for_tenant(
     tenant_id: uuid.UUID, file: UploadFile = File(...), db: Session = Depends(get_db)
 ):
