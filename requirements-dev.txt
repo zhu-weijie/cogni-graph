@@ -1,7 +1,14 @@
 -r requirements.txt
 black==25.1.0
 click==8.2.1
+langchain==0.3.26
+langchain-core==0.3.68
+langchain-openai==0.3.27
+langchain-postgres==0.0.15
+langchain-text-splitters==0.3.8
 pathspec==0.12.1
+psycopg==3.2.9
+psycopg-pool==3.2.6
 PyMuPDF==1.26.3
 python-multipart==0.0.20
 ruff==0.12.2
