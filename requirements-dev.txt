@@ -2,4 +2,5 @@
 black==25.1.0
 click==8.2.1
 pathspec==0.12.1
+python-multipart==0.0.20
 ruff==0.12.2
