@@ -4,6 +4,7 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from src.api.deps import get_db, get_graph_session
+from src.celery_worker import add
 
 router = APIRouter()
 
@@ -25,8 +26,18 @@ def health_check(
     except Exception:
         graph_db_status = "error"
 
+    try:
+        task = add.delay(2, 2)
+        celery_status = "ok"
+        task_id = task.id
+    except Exception as e:
+        celery_status = "error"
+        task_id = str(e)
+
     return {
         "status": "ok",
         "database_status": db_status,
         "graph_database_status": graph_db_status,
+        "celery_status": celery_status,
+        "test_task_id": task_id,
     }
