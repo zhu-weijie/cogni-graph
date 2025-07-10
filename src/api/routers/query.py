@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from src.api import schemas
 from src.api.deps import get_db
+from src.core.agents import agent_service
 from src.core.services import document_service, qa_service, tenant_service
 
 router = APIRouter(prefix="/tenants/{tenant_id}/query", tags=["Query"])
@@ -76,4 +77,16 @@ Question: {request.query}
 """
 
     answer = qa_service.generate_graph_answer(query=augmented_query)
+    return answer
+
+
+@router.post("/", response_model=str, tags=["Query"])
+def agent_query(
+    tenant_id: uuid.UUID, request: schemas.QueryRequest, db: Session = Depends(get_db)
+):
+    tenant = tenant_service.get_tenant_by_id(db, tenant_id=tenant_id)
+    if not tenant:
+        raise HTTPException(status_code=404, detail="Tenant not found")
+
+    answer = agent_service.run_agent(query=request.query, tenant_id=str(tenant.id))
     return answer
