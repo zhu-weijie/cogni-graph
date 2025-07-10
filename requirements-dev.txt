@@ -121,6 +121,10 @@ markupsafe==3.0.2
     #   mako
 mypy-extensions==1.1.0
     # via black
+neo4j==5.28.1
+    # via
+    #   -c /Users/focus/projects/cogni-graph/requirements.txt
+    #   -r /Users/focus/projects/cogni-graph/requirements.in
 numpy==2.3.1
     # via
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
@@ -193,6 +197,10 @@ python-multipart==0.0.20
     # via
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
     #   -r /Users/focus/projects/cogni-graph/requirements.in
+pytz==2025.2
+    # via
+    #   -c /Users/focus/projects/cogni-graph/requirements.txt
+    #   neo4j
 pyyaml==6.0.2
     # via
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
