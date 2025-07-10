@@ -42,6 +42,8 @@ frozenlist==1.7.0
     # via
     #   aiohttp
     #   aiosignal
+fsspec==2024.12.0
+    # via neo4j-graphrag
 h11==0.16.0
     # via
     #   httpcore
@@ -62,6 +64,8 @@ idna==3.10
     #   yarl
 jiter==0.10.0
     # via openai
+json-repair==0.39.1
+    # via neo4j-graphrag
 jsonpatch==1.33
     # via langchain-core
 jsonpointer==3.0.0
@@ -70,18 +74,24 @@ langchain==0.3.26
     # via
     #   -r requirements.in
     #   langchain-community
+    #   langchain-neo4j
 langchain-community==0.3.27
-    # via langchain-experimental
+    # via
+    #   -r requirements.in
+    #   langchain-experimental
 langchain-core==0.3.68
     # via
     #   -r requirements.in
     #   langchain
     #   langchain-community
     #   langchain-experimental
+    #   langchain-neo4j
     #   langchain-openai
     #   langchain-postgres
     #   langchain-text-splitters
 langchain-experimental==0.3.4
+    # via -r requirements.in
+langchain-neo4j==0.4.0
     # via -r requirements.in
 langchain-openai==0.3.27
     # via -r requirements.in
@@ -107,12 +117,19 @@ multidict==6.6.3
 mypy-extensions==1.1.0
     # via typing-inspect
 neo4j==5.28.1
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   langchain-neo4j
+    #   neo4j-graphrag
+neo4j-graphrag==1.8.0
+    # via langchain-neo4j
 numpy==2.3.1
     # via
     #   langchain-community
     #   langchain-postgres
+    #   neo4j-graphrag
     #   pgvector
+    #   scipy
 openai==1.93.2
     # via langchain-openai
 orjson==3.10.18
@@ -140,6 +157,7 @@ pydantic==2.11.7
     #   langchain
     #   langchain-core
     #   langsmith
+    #   neo4j-graphrag
     #   openai
     #   pydantic-settings
 pydantic-core==2.33.2
@@ -150,6 +168,8 @@ pydantic-settings==2.10.1
     #   langchain-community
 pymupdf==1.26.3
     # via -r requirements.in
+pypdf==5.7.0
+    # via neo4j-graphrag
 python-dotenv==1.1.1
     # via pydantic-settings
 python-multipart==0.0.20
@@ -161,6 +181,7 @@ pyyaml==6.0.2
     #   langchain
     #   langchain-community
     #   langchain-core
+    #   neo4j-graphrag
 regex==2024.11.6
     # via tiktoken
 requests==2.32.4
@@ -172,6 +193,8 @@ requests==2.32.4
     #   tiktoken
 requests-toolbelt==1.0.0
     # via langsmith
+scipy==1.16.0
+    # via neo4j-graphrag
 sniffio==1.3.1
     # via
     #   anyio
@@ -193,6 +216,8 @@ tiktoken==0.9.0
     # via langchain-openai
 tqdm==4.67.1
     # via openai
+types-pyyaml==6.0.12.20250516
+    # via neo4j-graphrag
 typing-extensions==4.14.1
     # via
     #   aiosignal

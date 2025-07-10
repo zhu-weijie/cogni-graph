@@ -16,6 +16,8 @@ langchain-core
 langchain-openai
 langchain-postgres
 langchain-experimental
+langchain-neo4j
+langchain-community
 
 # Configuration
 pydantic-settings
