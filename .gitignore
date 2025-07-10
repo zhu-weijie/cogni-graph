@@ -210,3 +210,6 @@ __marimo__/
 .DS_Store
 # Docker volumes
 postgres_data/
+
+# Pip-tools cache
+.pip-tools-cache/
