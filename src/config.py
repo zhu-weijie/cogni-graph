@@ -11,5 +11,7 @@ class Settings(BaseSettings):
     NEO4J_USER: str = "neo4j"
     NEO4J_PASSWORD: str = "password"
 
+    CELERY_BROKER_URL: str = "redis://redis:6379/0"
+
 
 settings = Settings()

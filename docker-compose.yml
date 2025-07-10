@@ -16,6 +16,10 @@ services:
         condition: service_healthy
       neo4j:
         condition: service_healthy
+      redis:
+        condition: service_healthy
+      worker:
+        condition: service_healthy
     environment:
       - DATABASE_URL=postgresql+psycopg://user:password@db:5432/cogni_graph_db
 
@@ -51,6 +55,32 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+
+  worker:
+    build: .
+    command: celery -A src.celery_worker.celery_app worker --loglevel=info
+    volumes:
+      - ./src:/home/appuser/app/src
+    depends_on:
+      redis:
+        condition: service_healthy
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD", "celery", "-A", "src.celery_worker.celery_app", "inspect", "ping"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
 
 volumes:
   postgres_data:

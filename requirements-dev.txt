@@ -20,6 +20,10 @@ alembic==1.16.3
     # via
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
     #   -r /Users/focus/projects/cogni-graph/requirements.in
+amqp==5.3.1
+    # via
+    #   -c /Users/focus/projects/cogni-graph/requirements.txt
+    #   kombu
 annotated-types==0.7.0
     # via
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
@@ -38,10 +42,18 @@ attrs==25.3.0
     # via
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
     #   aiohttp
+billiard==4.2.1
+    # via
+    #   -c /Users/focus/projects/cogni-graph/requirements.txt
+    #   celery
 black==25.1.0
     # via -r requirements-dev.in
 build==1.2.2.post1
     # via pip-tools
+celery==5.5.3
+    # via
+    #   -c /Users/focus/projects/cogni-graph/requirements.txt
+    #   -r /Users/focus/projects/cogni-graph/requirements.in
 certifi==2025.7.9
     # via
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
@@ -56,8 +68,24 @@ click==8.2.1
     # via
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
     #   black
+    #   celery
+    #   click-didyoumean
+    #   click-plugins
+    #   click-repl
     #   pip-tools
     #   uvicorn
+click-didyoumean==0.3.1
+    # via
+    #   -c /Users/focus/projects/cogni-graph/requirements.txt
+    #   celery
+click-plugins==1.1.1.2
+    # via
+    #   -c /Users/focus/projects/cogni-graph/requirements.txt
+    #   celery
+click-repl==0.3.0
+    # via
+    #   -c /Users/focus/projects/cogni-graph/requirements.txt
+    #   celery
 dataclasses-json==0.6.7
     # via
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
@@ -120,6 +148,10 @@ jsonpointer==3.0.0
     # via
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
     #   jsonpatch
+kombu==5.5.4
+    # via
+    #   -c /Users/focus/projects/cogni-graph/requirements.txt
+    #   celery
 langchain==0.3.26
     # via
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
@@ -221,6 +253,7 @@ packaging==24.2
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
     #   black
     #   build
+    #   kombu
     #   langchain-core
     #   langsmith
     #   marshmallow
@@ -234,6 +267,10 @@ pip-tools==7.4.1
     # via -r requirements-dev.in
 platformdirs==4.3.8
     # via black
+prompt-toolkit==3.0.51
+    # via
+    #   -c /Users/focus/projects/cogni-graph/requirements.txt
+    #   click-repl
 propcache==0.3.2
     # via
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
@@ -279,6 +316,10 @@ pyproject-hooks==1.2.0
     # via
     #   build
     #   pip-tools
+python-dateutil==2.9.0.post0
+    # via
+    #   -c /Users/focus/projects/cogni-graph/requirements.txt
+    #   celery
 python-dotenv==1.1.1
     # via
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
@@ -298,6 +339,10 @@ pyyaml==6.0.2
     #   langchain-community
     #   langchain-core
     #   neo4j-graphrag
+redis==6.2.0
+    # via
+    #   -c /Users/focus/projects/cogni-graph/requirements.txt
+    #   -r /Users/focus/projects/cogni-graph/requirements.in
 regex==2024.11.6
     # via
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
@@ -320,6 +365,10 @@ scipy==1.16.0
     # via
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
     #   neo4j-graphrag
+six==1.17.0
+    # via
+    #   -c /Users/focus/projects/cogni-graph/requirements.txt
+    #   python-dateutil
 sniffio==1.3.1
     # via
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
@@ -379,6 +428,10 @@ typing-inspection==0.4.1
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
     #   pydantic
     #   pydantic-settings
+tzdata==2025.2
+    # via
+    #   -c /Users/focus/projects/cogni-graph/requirements.txt
+    #   kombu
 urllib3==2.5.0
     # via
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
@@ -387,6 +440,16 @@ uvicorn==0.35.0
     # via
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
     #   -r /Users/focus/projects/cogni-graph/requirements.in
+vine==5.1.0
+    # via
+    #   -c /Users/focus/projects/cogni-graph/requirements.txt
+    #   amqp
+    #   celery
+    #   kombu
+wcwidth==0.2.13
+    # via
+    #   -c /Users/focus/projects/cogni-graph/requirements.txt
+    #   prompt-toolkit
 wheel==0.45.1
     # via pip-tools
 yarl==1.20.1

@@ -12,6 +12,8 @@ aiosignal==1.4.0
     # via aiohttp
 alembic==1.16.3
     # via -r requirements.in
+amqp==5.3.1
+    # via kombu
 annotated-types==0.7.0
     # via pydantic
 anyio==4.9.0
@@ -23,6 +25,10 @@ asyncpg==0.30.0
     # via langchain-postgres
 attrs==25.3.0
     # via aiohttp
+billiard==4.2.1
+    # via celery
+celery==5.5.3
+    # via -r requirements.in
 certifi==2025.7.9
     # via
     #   httpcore
@@ -31,7 +37,18 @@ certifi==2025.7.9
 charset-normalizer==3.4.2
     # via requests
 click==8.2.1
-    # via uvicorn
+    # via
+    #   celery
+    #   click-didyoumean
+    #   click-plugins
+    #   click-repl
+    #   uvicorn
+click-didyoumean==0.3.1
+    # via celery
+click-plugins==1.1.1.2
+    # via celery
+click-repl==0.3.0
+    # via celery
 dataclasses-json==0.6.7
     # via langchain-community
 distro==1.9.0
@@ -70,6 +87,8 @@ jsonpatch==1.33
     # via langchain-core
 jsonpointer==3.0.0
     # via jsonpatch
+kombu==5.5.4
+    # via celery
 langchain==0.3.26
     # via
     #   -r requirements.in
@@ -136,11 +155,14 @@ orjson==3.10.18
     # via langsmith
 packaging==24.2
     # via
+    #   kombu
     #   langchain-core
     #   langsmith
     #   marshmallow
 pgvector==0.3.6
     # via langchain-postgres
+prompt-toolkit==3.0.51
+    # via click-repl
 propcache==0.3.2
     # via
     #   aiohttp
@@ -170,6 +192,8 @@ pymupdf==1.26.3
     # via -r requirements.in
 pypdf==5.7.0
     # via neo4j-graphrag
+python-dateutil==2.9.0.post0
+    # via celery
 python-dotenv==1.1.1
     # via pydantic-settings
 python-multipart==0.0.20
@@ -182,6 +206,8 @@ pyyaml==6.0.2
     #   langchain-community
     #   langchain-core
     #   neo4j-graphrag
+redis==6.2.0
+    # via -r requirements.in
 regex==2024.11.6
     # via tiktoken
 requests==2.32.4
@@ -195,6 +221,8 @@ requests-toolbelt==1.0.0
     # via langsmith
 scipy==1.16.0
     # via neo4j-graphrag
+six==1.17.0
+    # via python-dateutil
 sniffio==1.3.1
     # via
     #   anyio
@@ -239,10 +267,19 @@ typing-inspection==0.4.1
     # via
     #   pydantic
     #   pydantic-settings
+tzdata==2025.2
+    # via kombu
 urllib3==2.5.0
     # via requests
 uvicorn==0.35.0
     # via -r requirements.in
+vine==5.1.0
+    # via
+    #   amqp
+    #   celery
+    #   kombu
+wcwidth==0.2.13
+    # via prompt-toolkit
 yarl==1.20.1
     # via aiohttp
 zstandard==0.23.0
