@@ -1,19 +1,20 @@
+from functools import partial
+
 from langchain.agents import AgentExecutor, create_openai_tools_agent
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.tools import tool
+from langchain_core.tools import Tool
 from langchain_openai import ChatOpenAI
+from pydantic.v1 import BaseModel, Field
 
 from src.config import settings
 from src.core.services import document_service, qa_service
 
 
-@tool
+class SearchInput(BaseModel):
+    query: str = Field(description="The user's original, full question.")
+
+
 def vector_search(query: str, tenant_id: str) -> str:
-    """
-    Use this tool for general questions about the content of the document.
-    It is good for answering questions about concepts, summaries, or finding
-    general information. Input should be the user's original question.
-    """
     retrieved_chunks = document_service.search_documents(
         query=query, tenant_id=tenant_id
     )
@@ -21,14 +22,7 @@ def vector_search(query: str, tenant_id: str) -> str:
     return answer
 
 
-@tool
 def graph_search(query: str, tenant_id: str) -> str:
-    """
-    Use this tool for specific questions about entities and their relationships.
-    It is good for questions like 'Who is X?', 'What is the email of Y?',
-    or 'What is the relationship between A and B?'.
-    Input should be the user's original question.
-    """
     retrieved_chunks = document_service.search_documents(
         query=query, tenant_id=tenant_id
     )
@@ -38,29 +32,44 @@ def graph_search(query: str, tenant_id: str) -> str:
     return answer
 
 
-tools = [vector_search, graph_search]
-
-prompt = ChatPromptTemplate.from_messages(
-    [
-        (
-            "system",
-            (
-                "You are a helpful assistant. You have access to two tools: "
-                "a vector search tool for general questions and a graph search "
-                "tool for specific, factual questions about entities and relationships."
-            ),
+def run_agent(query: str, tenant_id: str) -> dict:
+    tools = [
+        Tool(
+            name="vector_search",
+            func=partial(vector_search, tenant_id=tenant_id),
+            description="Use this for general questions about concepts, summaries, "
+            "or finding general information.",
+            args_schema=SearchInput,
         ),
-        ("human", "{input}"),
-        MessagesPlaceholder(variable_name="agent_scratchpad"),
+        Tool(
+            name="graph_search",
+            func=partial(graph_search, tenant_id=tenant_id),
+            description="Use this for specific questions about entities "
+            "(people, places, things) and their relationships.",
+            args_schema=SearchInput,
+        ),
     ]
-)
 
-llm = ChatOpenAI(openai_api_key=settings.OPENAI_API_KEY, model="gpt-4o", temperature=0)
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            (
+                "system",
+                "You are a helpful assistant. You must use one of the provided tools "
+                "to answer the user's question.",
+            ),
+            ("human", "{input}"),
+            MessagesPlaceholder(variable_name="agent_scratchpad"),
+        ]
+    )
 
-agent = create_openai_tools_agent(llm, tools, prompt)
-agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+    llm = ChatOpenAI(
+        openai_api_key=settings.OPENAI_API_KEY, model="gpt-4o", temperature=0
+    )
+    agent = create_openai_tools_agent(llm, tools, prompt)
 
+    agent_executor = AgentExecutor(
+        agent=agent, tools=tools, verbose=True, return_intermediate_steps=True
+    )
 
-def run_agent(query: str, tenant_id: str) -> str:
-    response = agent_executor.invoke({"input": query, "tenant_id": tenant_id})
-    return response["output"]
+    response = agent_executor.invoke({"input": query})
+    return response

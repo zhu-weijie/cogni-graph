@@ -1,7 +1,8 @@
 import uuid
 from datetime import datetime
+from typing import Any
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class TenantCreate(BaseModel):
@@ -36,3 +37,8 @@ class RetrievalResponse(BaseModel):
 class RagAnswer(BaseModel):
     answer: str
     sources: list[DocumentChunk]
+
+
+class AgentResponse(BaseModel):
+    output: str
+    intermediate_steps: list[Any] = Field(default_factory=list)
