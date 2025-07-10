@@ -1,8 +1,7 @@
 from langchain.chains.combine_documents import create_stuff_documents_chain
-from langchain_community.chains.graph_qa.cypher import GraphCypherQAChain
 from langchain_core.documents import Document
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_neo4j import Neo4jGraph
+from langchain_neo4j import GraphCypherQAChain, Neo4jGraph
 from langchain_openai import ChatOpenAI
 
 from src.config import settings
@@ -35,7 +34,10 @@ graph = Neo4jGraph(
 )
 
 graph_qa_chain = GraphCypherQAChain.from_llm(
-    graph=graph, llm=llm, verbose=True, allow_dangerous_requests=True
+    graph=graph,
+    llm=llm,
+    verbose=True,
+    allow_dangerous_requests=True,
 )
 
 
