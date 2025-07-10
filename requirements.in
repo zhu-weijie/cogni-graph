@@ -7,6 +7,7 @@ python-multipart
 sqlalchemy
 alembic
 psycopg
+neo4j
 
 # PDF and AI Processing
 PyMuPDF

@@ -7,5 +7,9 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     OPENAI_API_KEY: str
 
+    NEO4J_URI: str = "neo4j://neo4j:7687"
+    NEO4J_USER: str = "neo4j"
+    NEO4J_PASSWORD: str = "password"
+
 
 settings = Settings()
