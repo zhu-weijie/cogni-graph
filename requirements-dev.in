@@ -1,0 +1,7 @@
+-c requirements.txt # Constrain versions to match the prod lock file
+-r requirements.in  # Include all production packages
+
+# --- Development Tools ---
+pip-tools
+black
+ruff

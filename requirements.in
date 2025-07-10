@@ -1,0 +1,19 @@
+# Core web framework
+fastapi
+uvicorn
+python-multipart
+
+# Database and Migrations
+sqlalchemy
+alembic
+psycopg
+
+# PDF and AI Processing
+PyMuPDF
+langchain
+langchain-core
+langchain-openai
+langchain-postgres
+
+# Configuration
+pydantic-settings
