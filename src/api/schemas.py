@@ -31,3 +31,8 @@ class DocumentChunk(BaseModel):
 
 class RetrievalResponse(BaseModel):
     retrieved_chunks: list[DocumentChunk]
+
+
+class RagAnswer(BaseModel):
+    answer: str
+    sources: list[DocumentChunk]
