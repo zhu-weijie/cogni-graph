@@ -75,7 +75,7 @@ Question: {request.query}
     return answer
 
 
-@router.post("/", response_model=str, tags=["Query"])
+@router.post("/", response_model=schemas.AgentResponse)
 def agent_query(
     tenant_id: uuid.UUID, request: schemas.QueryRequest, db: Session = Depends(get_db)
 ):
@@ -83,5 +83,7 @@ def agent_query(
     if not tenant:
         raise HTTPException(status_code=404, detail="Tenant not found")
 
-    answer = agent_service.run_agent(query=request.query, tenant_id=str(tenant.id))
-    return answer
+    answer_object = agent_service.run_agent(
+        query=request.query, tenant_id=str(tenant.id)
+    )
+    return answer_object
