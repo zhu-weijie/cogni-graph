@@ -19,11 +19,3 @@ graph_db_instance = GraphDB(
     user=settings.NEO4J_USER,
     password=settings.NEO4J_PASSWORD,
 )
-
-
-def get_graph_session():
-    session = graph_db_instance.get_session()
-    try:
-        yield session
-    finally:
-        session.close()
