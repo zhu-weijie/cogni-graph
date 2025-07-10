@@ -31,14 +31,9 @@ def retrieve_documents_for_query(
     return {"retrieved_chunks": retrieved_chunks}
 
 
-@router.post(
-    "/generate",
-    response_model=str,
-)
+@router.post("/generate", response_model=schemas.RagAnswer, tags=["Query"])
 def generate_answer_from_query(
-    tenant_id: uuid.UUID,
-    request: schemas.QueryRequest,
-    db: Session = Depends(get_db),
+    tenant_id: uuid.UUID, request: schemas.QueryRequest, db: Session = Depends(get_db)
 ):
     tenant = tenant_service.get_tenant_by_id(db, tenant_id=tenant_id)
     if not tenant:
@@ -50,7 +45,7 @@ def generate_answer_from_query(
 
     answer = qa_service.generate_answer(query=request.query, context=retrieved_chunks)
 
-    return answer
+    return {"answer": answer, "sources": retrieved_chunks}
 
 
 @router.post("/graph-generate", response_model=str)
