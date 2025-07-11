@@ -1,6 +1,7 @@
 import uuid
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 
 from src.api import schemas
@@ -31,9 +32,14 @@ def retrieve_documents_for_query(
     return {"retrieved_chunks": retrieved_chunks}
 
 
-@router.post("/generate", response_model=schemas.RagAnswer, tags=["Query"])
+@router.post(
+    "/generate",
+    response_model=schemas.RagAnswer,
+)
 def generate_answer_from_query(
-    tenant_id: uuid.UUID, request: schemas.QueryRequest, db: Session = Depends(get_db)
+    tenant_id: uuid.UUID,
+    request: schemas.QueryRequest,
+    db: Session = Depends(get_db),
 ):
     tenant = tenant_service.get_tenant_by_id(db, tenant_id=tenant_id)
     if not tenant:
@@ -75,15 +81,17 @@ Question: {request.query}
     return answer
 
 
-@router.post("/", response_model=schemas.AgentResponse)
-def agent_query(
-    tenant_id: uuid.UUID, request: schemas.QueryRequest, db: Session = Depends(get_db)
+@router.post("/", tags=["Query"])
+async def agent_query_stream(
+    tenant_id: uuid.UUID,
+    request: schemas.QueryRequest,
+    db: Session = Depends(get_db),
 ):
     tenant = tenant_service.get_tenant_by_id(db, tenant_id=tenant_id)
     if not tenant:
         raise HTTPException(status_code=404, detail="Tenant not found")
 
-    answer_object = agent_service.run_agent(
+    response_generator = agent_service.stream_agent(
         query=request.query, tenant_id=str(tenant.id)
     )
-    return answer_object
+    return StreamingResponse(response_generator, media_type="text/plain")
