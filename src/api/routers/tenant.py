@@ -2,12 +2,13 @@ import os
 import shutil
 import uuid
 
+from celery.result import AsyncResult
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
 
 from src.api import schemas
 from src.api.deps import get_db
-from src.celery_worker import process_document_task
+from src.celery_worker import celery_app, process_document_task
 from src.core.services import tenant_service
 
 router = APIRouter(
@@ -53,3 +54,15 @@ def upload_document_for_tenant(
     )
 
     return {"task_id": task.id, "status": "Processing"}
+
+
+@router.get("/{tenant_id}/status/{task_id}", tags=["Documents"])
+def get_task_status(tenant_id: uuid.UUID, task_id: str):
+    task_result = AsyncResult(task_id, app=celery_app)
+
+    response = {
+        "task_id": task_id,
+        "status": task_result.status,
+        "result": task_result.result,
+    }
+    return response
