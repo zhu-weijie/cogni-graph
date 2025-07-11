@@ -132,6 +132,8 @@ idna==3.10
     #   httpx
     #   requests
     #   yarl
+iniconfig==2.1.0
+    # via pytest
 jiter==0.10.0
     # via
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
@@ -257,6 +259,7 @@ packaging==24.2
     #   langchain-core
     #   langsmith
     #   marshmallow
+    #   pytest
 pathspec==0.12.1
     # via black
 pgvector==0.3.6
@@ -267,6 +270,8 @@ pip-tools==7.4.1
     # via -r requirements-dev.in
 platformdirs==4.3.8
     # via black
+pluggy==1.6.0
+    # via pytest
 prompt-toolkit==3.0.51
     # via
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
@@ -304,6 +309,8 @@ pydantic-settings==2.10.1
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
     #   -r /Users/focus/projects/cogni-graph/requirements.in
     #   langchain-community
+pygments==2.19.2
+    # via pytest
 pymupdf==1.26.3
     # via
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
@@ -316,6 +323,8 @@ pyproject-hooks==1.2.0
     # via
     #   build
     #   pip-tools
+pytest==8.4.1
+    # via -r requirements-dev.in
 python-dateutil==2.9.0.post0
     # via
     #   -c /Users/focus/projects/cogni-graph/requirements.txt
