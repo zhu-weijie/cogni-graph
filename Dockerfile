@@ -13,6 +13,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 RUN useradd --create-home appuser
+RUN mkdir -p /home/appuser/app/uploads && chown -R appuser:appuser /home/appuser/app
 USER appuser
 
 WORKDIR /home/appuser/app
