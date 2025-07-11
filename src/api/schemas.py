@@ -42,3 +42,8 @@ class RagAnswer(BaseModel):
 class AgentResponse(BaseModel):
     output: str
     intermediate_steps: list[Any] = Field(default_factory=list)
+
+
+class UploadResponse(BaseModel):
+    task_id: str
+    status: str
