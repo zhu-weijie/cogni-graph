@@ -324,6 +324,10 @@ pyproject-hooks==1.2.0
     #   build
     #   pip-tools
 pytest==8.4.1
+    # via
+    #   -r requirements-dev.in
+    #   pytest-mock
+pytest-mock==3.14.1
     # via -r requirements-dev.in
 python-dateutil==2.9.0.post0
     # via

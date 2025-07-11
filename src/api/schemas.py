@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class TenantCreate(BaseModel):
@@ -14,8 +14,7 @@ class Tenant(BaseModel):
     name: str
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class QueryRequest(BaseModel):
@@ -26,8 +25,7 @@ class DocumentChunk(BaseModel):
     page_content: str
     metadata: dict
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class RetrievalResponse(BaseModel):

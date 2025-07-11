@@ -6,3 +6,4 @@ pip-tools
 black
 ruff
 pytest
+pytest-mock
