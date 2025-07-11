@@ -32,7 +32,7 @@ def graph_search(query: str, tenant_id: str) -> str:
     return answer
 
 
-def run_agent(query: str, tenant_id: str) -> dict:
+async def stream_agent(query: str, tenant_id: str):
     tools = [
         Tool(
             name="vector_search",
@@ -63,13 +63,20 @@ def run_agent(query: str, tenant_id: str) -> dict:
     )
 
     llm = ChatOpenAI(
-        openai_api_key=settings.OPENAI_API_KEY, model="gpt-4o", temperature=0
+        openai_api_key=settings.OPENAI_API_KEY,
+        model="gpt-4o",
+        temperature=0,
+        streaming=True,
     )
+
     agent = create_openai_tools_agent(llm, tools, prompt)
+    agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
 
-    agent_executor = AgentExecutor(
-        agent=agent, tools=tools, verbose=True, return_intermediate_steps=True
-    )
-
-    response = agent_executor.invoke({"input": query})
-    return response
+    async for event in agent_executor.astream_events({"input": query}, version="v1"):
+        kind = event["event"]
+        if kind == "on_chain_end" and event["name"] == "AgentExecutor":
+            break
+        if kind == "on_chat_model_stream":
+            content = event["data"]["chunk"].content
+            if content:
+                yield content
