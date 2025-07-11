@@ -50,7 +50,7 @@ This diagram shows how a query is processed by the AI agent, which selects the a
 
 1.  **Clone the repository:**
     ```bash
-    git clone <your-repo-url>
+    git clone https://github.com/zhu-weijie/cogni-graph.git
     cd cogni-graph
     ```
 
@@ -58,6 +58,7 @@ This diagram shows how a query is processed by the AI agent, which selects the a
     Create a `.env` file in the project root and add your OpenAI API key:
     ```
     OPENAI_API_KEY="sk-..."
+    DATABASE_URL="postgresql+psycopg://user:password@db:5432/cogni_graph_db"
     ```
 
 3.  **Build and start the services:**
