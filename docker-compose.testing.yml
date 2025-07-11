@@ -1,0 +1,8 @@
+services:
+  tester:
+    build:
+      context: .
+      target: test
+    volumes:
+      - ./src:/home/appuser/app/src
+      - ./tests:/home/appuser/app/tests

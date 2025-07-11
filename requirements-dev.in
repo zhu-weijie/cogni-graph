@@ -5,3 +5,4 @@
 pip-tools
 black
 ruff
+pytest
