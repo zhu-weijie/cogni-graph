@@ -25,3 +25,28 @@ resource "aws_eks_cluster" "main" {
     Project = "cogni-graph"
   }
 }
+
+resource "aws_eks_node_group" "main" {
+  cluster_name    = aws_eks_cluster.main.name
+  node_group_name = "cogni-graph-main-nodes"
+  node_role_arn   = aws_iam_role.eks_nodes.arn
+  subnet_ids      = module.vpc.private_subnets
+
+  instance_types = ["t3.medium"]
+
+  scaling_config {
+    desired_size = 2
+    min_size     = 1
+    max_size     = 3
+  }
+
+  depends_on = [
+    aws_iam_role_policy_attachment.eks_nodes_worker_policy,
+    aws_iam_role_policy_attachment.eks_nodes_cni_policy,
+    aws_iam_role_policy_attachment.eks_nodes_ecr_policy,
+  ]
+
+  tags = {
+    Project = "cogni-graph"
+  }
+}
