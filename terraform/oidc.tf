@@ -21,6 +21,15 @@ data "aws_iam_policy_document" "github_actions_cd_policy" {
     ]
     resources = ["*"]
   }
+
+  statement {
+    actions = [
+      "secretsmanager:GetSecretValue"
+    ]
+    resources = [
+      "arn:aws:secretsmanager:${var.aws_region}:${var.aws_account_id}:secret:cogni-graph/*"
+    ]
+  }
 }
 
 resource "aws_iam_policy" "github_actions_cd" {
