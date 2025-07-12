@@ -61,12 +61,10 @@ jobs:
       - name: Set up Kubeconfig
         run: aws eks update-kubeconfig --name ${{ secrets.AWS_EKS_CLUSTER_NAME }} --region ${{ secrets.AWS_REGION }}
 
-      - name: Fetch Secret and Deploy
+      - name: Fetch Secret and Deploy to EKS
         run: |
           OPENAI_KEY=$(aws secretsmanager get-secret-value --secret-id cogni-graph/openai --query SecretString --output text | jq -r .OPENAI_API_KEY)
-          
-          sed -i "s|placeholder-will-be-replaced-by-cd-pipeline|$OPENAI_KEY|g" k8s/secrets.yaml
-          
-          kubectl apply -f k8s/secrets.yaml
-          
-          echo "Secret manifest applied successfully."
+
+          kubectl create secret generic cogni-graph-secrets \
+            --from-literal=OPENAI_API_KEY="$OPENAI_KEY" \
+            --dry-run=client -o yaml | kubectl apply -f -
