@@ -36,25 +36,27 @@ spec:
                 secretKeyRef:
                   name: cogni-graph-secrets
                   key: OPENAI_API_KEY
-            - name: DATABASE_URL
-              value: "postgresql+psycopg://cogni_user:$(DB_PASSWORD)@$(DB_HOST):5432/cogni_graph_db"
             - name: CELERY_BROKER_URL
               value: "redis://$(REDIS_HOST):6379/0"
-            - name: DB_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: cogni-graph-config
-                  key: DB_HOST
             - name: REDIS_HOST
               valueFrom:
                 configMapKeyRef:
                   name: cogni-graph-config
                   key: REDIS_HOST
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: cogni-graph-config
+                  key: DB_HOST
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: db-credentials
                   key: password
+            - name: DB_NAME
+              value: "cogni_graph_db"
+            - name: DB_USER
+              value: "cogni_user"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -92,22 +94,24 @@ spec:
                 secretKeyRef:
                   name: cogni-graph-secrets
                   key: OPENAI_API_KEY
-            - name: DATABASE_URL
-              value: "postgresql+psycopg://cogni_user:$(DB_PASSWORD)@$(DB_HOST):5432/cogni_graph_db"
             - name: CELERY_BROKER_URL
               value: "redis://$(REDIS_HOST):6379/0"
-            - name: DB_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: cogni-graph-config
-                  key: DB_HOST
             - name: REDIS_HOST
               valueFrom:
                 configMapKeyRef:
                   name: cogni-graph-config
                   key: REDIS_HOST
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: cogni-graph-config
+                  key: DB_HOST
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: db-credentials
                   key: password
+            - name: DB_NAME
+              value: "cogni_graph_db"
+            - name: DB_USER
+              value: "cogni_user"
