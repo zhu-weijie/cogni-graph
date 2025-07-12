@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cogni-graph-config
+data:
+  DB_HOST: "cogni-graph-db.cpqcge4euskn.ap-southeast-1.rds.amazonaws.com"
+  REDIS_HOST: "cogni-graph-redis.m1eiae.0001.apse1.cache.amazonaws.com"
+  NEO4J_URI: "neo4j+s://8352706f.databases.neo4j.io"
+  NEO4J_USER: "neo4j"
