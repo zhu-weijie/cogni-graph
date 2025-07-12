@@ -63,6 +63,8 @@ jobs:
 
       - name: Fetch Secret and Deploy to EKS
         run: |
+          kubectl apply -f k8s/configmap.yaml
+
           OPENAI_KEY=$(aws secretsmanager get-secret-value --secret-id cogni-graph/openai --query SecretString --output text | jq -r .OPENAI_API_KEY)
 
           kubectl create secret generic cogni-graph-secrets \
