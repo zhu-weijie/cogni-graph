@@ -15,6 +15,9 @@ spec:
       containers:
         - name: api
           image: 215288576473.dkr.ecr.ap-southeast-1.amazonaws.com/cogni-graph-api:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - "alembic upgrade head && uvicorn src.main:app --host 0.0.0.0 --port 8000"
           ports:
             - containerPort: 8000
           env:
@@ -70,7 +73,9 @@ spec:
       containers:
         - name: worker
           image: 215288576473.dkr.ecr.ap-southeast-1.amazonaws.com/cogni-graph-api:latest
-          command: ["celery", "-A", "src.celery_worker.celery_app", "worker", "--loglevel=info"]
+          command: ["/bin/sh", "-c"]
+          args:
+            - "celery -A src.celery_worker.celery_app worker --loglevel=info"
           env:
             - name: NEO4J_URI
               valueFrom:
