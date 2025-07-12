@@ -6,3 +6,37 @@ services:
     volumes:
       - ./src:/home/appuser/app/src
       - ./tests:/home/appuser/app/tests
+      - ./conftest.py:/home/appuser/app/conftest.py
+    environment:
+      - DATABASE_URL=postgresql+psycopg://user:${TEST_DB_PASSWORD}@db:5432/cogni_graph_db_test
+      - NEO4J_URI=neo4j://neo4j:7687
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      db:
+        condition: service_healthy
+      neo4j:
+        condition: service_healthy
+
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=${TEST_DB_PASSWORD}
+      - POSTGRES_DB=cogni_graph_db_test
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d cogni_graph_db_test"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  neo4j:
+    image: neo4j:5-enterprise
+    environment:
+      - NEO4J_AUTH=neo4j/password
+      - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
+      - NEO4J_PLUGINS=["apoc"]
+    healthcheck:
+      test: ["CMD", "wget", "-O", "/dev/null", "http://localhost:7474"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
