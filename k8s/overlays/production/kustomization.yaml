@@ -3,7 +3,3 @@ kind: Kustomization
 
 bases:
   - ../../base
-
-images:
-  - name: 215288576473.dkr.ecr.ap-southeast-1.amazonaws.com/cogni-graph-api
-    newTag: placeholder-tag
