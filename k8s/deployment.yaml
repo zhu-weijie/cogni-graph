@@ -1,0 +1,108 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cogni-graph-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: <IMAGE_PLACEHOLDER>
+          ports:
+            - containerPort: 8000
+          env:
+            - name: NEO4J_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: cogni-graph-config
+                  key: NEO4J_URI
+            - name: NEO4J_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: cogni-graph-config
+                  key: NEO4J_USER
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cogni-graph-secrets
+                  key: OPENAI_API_KEY
+            - name: DATABASE_URL
+              value: "postgresql+psycopg://cogni_user:$(DB_PASSWORD)@$(DB_HOST):5432/cogni_graph_db"
+            - name: CELERY_BROKER_URL
+              value: "redis://$(REDIS_HOST):6379/0"
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: cogni-graph-config
+                  key: DB_HOST
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: cogni-graph-config
+                  key: REDIS_HOST
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: password
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cogni-graph-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      containers:
+        - name: worker
+          image: <IMAGE_PLACEHOLDER>
+          command: ["celery", "-A", "src.celery_worker.celery_app", "worker", "--loglevel=info"]
+          env:
+            - name: NEO4J_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: cogni-graph-config
+                  key: NEO4J_URI
+            - name: NEO4J_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: cogni-graph-config
+                  key: NEO4J_USER
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cogni-graph-secrets
+                  key: OPENAI_API_KEY
+            - name: DATABASE_URL
+              value: "postgresql+psycopg://cogni_user:$(DB_PASSWORD)@$(DB_HOST):5432/cogni_graph_db"
+            - name: CELERY_BROKER_URL
+              value: "redis://$(REDIS_HOST):6379/0"
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: cogni-graph-config
+                  key: DB_HOST
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: cogni-graph-config
+                  key: REDIS_HOST
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: password
