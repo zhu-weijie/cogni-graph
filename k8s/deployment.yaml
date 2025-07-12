@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: 215288576473.dkr.ecr.ap-southeast-1.amazonaws.com/cogni-graph-api:latest
+          image: __IMAGE_PLACEHOLDER__
           ports:
             - containerPort: 8000
           env:
@@ -69,7 +69,7 @@ spec:
     spec:
       containers:
         - name: worker
-          image: 215288576473.dkr.ecr.ap-southeast-1.amazonaws.com/cogni-graph-api:latest
+          image: __IMAGE_PLACEHOLDER__
           command: ["celery", "-A", "src.celery_worker.celery_app", "worker", "--loglevel=info"]
           env:
             - name: NEO4J_URI
