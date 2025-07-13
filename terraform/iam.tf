@@ -73,8 +73,7 @@ resource "aws_iam_policy" "secrets_manager_read" {
         ],
         Effect = "Allow",
         Resource = [
-          aws_secretsmanager_secret.neo4j_password.arn,
-          "arn:aws:secretsmanager:${var.aws_region}:${var.aws_account_id}:secret:rds!db-${aws_db_instance.main.id}-*"
+          "arn:aws:secretsmanager:${var.aws_region}:${var.aws_account_id}:secret:cogni-graph/*"
         ]
       }
     ]
@@ -84,4 +83,34 @@ resource "aws_iam_policy" "secrets_manager_read" {
 resource "aws_iam_role_policy_attachment" "eks_nodes_secrets_policy" {
   policy_arn = aws_iam_policy.secrets_manager_read.arn
   role       = aws_iam_role.eks_nodes.name
+}
+
+data "aws_iam_policy_document" "secrets_store_csi_driver_assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    effect  = "Allow"
+
+    principals {
+      type = "Federated"
+      identifiers = [
+        aws_iam_openid_connect_provider.main.arn
+      ]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(aws_iam_openid_connect_provider.main.url, "https://", "")}:sub"
+      values   = ["system:serviceaccount:kube-system:secrets-store-csi-driver"]
+    }
+  }
+}
+
+resource "aws_iam_role" "secrets_store_csi_driver" {
+  name               = "cogni-graph-secrets-store-csi-role"
+  assume_role_policy = data.aws_iam_policy_document.secrets_store_csi_driver_assume_role_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "secrets_store_csi_driver_policy" {
+  policy_arn = aws_iam_policy.secrets_manager_read.arn
+  role       = aws_iam_role.secrets_store_csi_driver.name
 }
