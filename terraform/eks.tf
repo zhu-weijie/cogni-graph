@@ -11,7 +11,7 @@ data "aws_subnets" "private" {
 resource "aws_eks_cluster" "main" {
   name     = "cogni-graph-eks"
   role_arn = aws_iam_role.eks_cluster.arn
-  version  = "1.30"
+  version  = "1.32"
 
   vpc_config {
     subnet_ids = module.vpc.private_subnets
