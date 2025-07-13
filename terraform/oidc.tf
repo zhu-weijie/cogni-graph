@@ -27,7 +27,8 @@ data "aws_iam_policy_document" "github_actions_cd_policy" {
       "secretsmanager:GetSecretValue"
     ]
     resources = [
-      "arn:aws:secretsmanager:${var.aws_region}:${var.aws_account_id}:secret:cogni-graph/*"
+      "arn:aws:secretsmanager:${var.aws_region}:${var.aws_account_id}:secret:cogni-graph/*",
+      "arn:aws:secretsmanager:${var.aws_region}:${var.aws_account_id}:secret:rds!db-*"
     ]
   }
 }
