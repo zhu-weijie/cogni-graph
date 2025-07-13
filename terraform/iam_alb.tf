@@ -33,7 +33,7 @@ data "http" "aws_load_balancer_controller_iam_policy" {
 resource "aws_iam_policy" "aws_load_balancer_controller" {
   name        = "cogni-graph-AWSLoadBalancerControllerIAMPolicy"
   description = "IAM policy for the AWS Load Balancer Controller"
-  policy      = data.http.aws_load_balancer_controller_iam_policy.body
+  policy      = data.http.aws_load_balancer_controller_iam_policy.response_body
 }
 
 resource "aws_iam_role_policy_attachment" "aws_load_balancer_controller" {
