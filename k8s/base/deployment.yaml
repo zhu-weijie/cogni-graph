@@ -41,8 +41,6 @@ spec:
                 secretKeyRef:
                   name: cogni-graph-secrets
                   key: OPENAI_API_KEY
-            - name: CELERY_BROKER_URL
-              value: "redis://$(REDIS_HOST):6379/0"
             - name: REDIS_HOST
               valueFrom:
                 configMapKeyRef:
@@ -104,8 +102,6 @@ spec:
                 secretKeyRef:
                   name: cogni-graph-secrets
                   key: OPENAI_API_KEY
-            - name: CELERY_BROKER_URL
-              value: "redis://$(REDIS_HOST):6379/0"
             - name: REDIS_HOST
               valueFrom:
                 configMapKeyRef:
