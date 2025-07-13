@@ -7,6 +7,8 @@ resource "aws_ecr_repository" "api" {
 
   image_tag_mutability = "IMMUTABLE"
 
+  force_delete = true
+
   tags = {
     Project = "cogni-graph"
   }
