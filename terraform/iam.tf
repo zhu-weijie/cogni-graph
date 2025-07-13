@@ -59,3 +59,26 @@ resource "aws_iam_role_policy_attachment" "eks_nodes_ecr_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
   role       = aws_iam_role.eks_nodes.name
 }
+
+resource "aws_iam_policy" "secrets_manager_read" {
+  name        = "cogni-graph-secrets-read-policy"
+  description = "Allows reading specific secrets from Secrets Manager"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = [
+          "secretsmanager:GetSecretValue"
+        ],
+        Effect   = "Allow",
+        Resource = aws_secretsmanager_secret.db_password.arn
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "eks_nodes_secrets_policy" {
+  policy_arn = aws_iam_policy.secrets_manager_read.arn
+  role       = aws_iam_role.eks_nodes.name
+}
