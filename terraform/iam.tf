@@ -71,8 +71,11 @@ resource "aws_iam_policy" "secrets_manager_read" {
         Action = [
           "secretsmanager:GetSecretValue"
         ],
-        Effect   = "Allow",
-        Resource = aws_secretsmanager_secret.db_password.arn
+        Effect = "Allow",
+        Resource = [
+          aws_secretsmanager_secret.neo4j_password.arn,
+          "arn:aws:secretsmanager:${var.aws_region}:${var.aws_account_id}:secret:rds!db-${aws_db_instance.main.id}-*"
+        ]
       }
     ]
   })
