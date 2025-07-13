@@ -32,19 +32,18 @@ resource "aws_security_group" "rds" {
 }
 
 resource "aws_db_instance" "main" {
-  identifier               = "cogni-graph-db"
-  allocated_storage        = 20
-  storage_type             = "gp2"
-  engine                   = "postgres"
-  engine_version           = "16"
-  instance_class           = "db.t3.micro"
-  db_name                  = "cogni_graph_db"
-  username                 = "cogni_user"
+  identifier                  = "cogni-graph-db"
+  allocated_storage           = 20
+  storage_type                = "gp2"
+  engine                      = "postgres"
+  engine_version              = "16"
+  instance_class              = "db.t3.micro"
+  db_name                     = "cogni_graph_db"
+  username                    = "cogni_user"
   manage_master_user_password = true
-  master_user_secret_kms_key_id = aws_secretsmanager_secret.db_password.kms_key_id
-  db_subnet_group_name     = aws_db_subnet_group.main.name
-  vpc_security_group_ids   = [aws_security_group.rds.id]
-  skip_final_snapshot      = true
+  db_subnet_group_name        = aws_db_subnet_group.main.name
+  vpc_security_group_ids      = [aws_security_group.rds.id]
+  skip_final_snapshot         = true
 
   tags = {
     Project = "cogni-graph"
