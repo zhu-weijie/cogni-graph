@@ -1,8 +1,3 @@
-resource "aws_secretsmanager_secret" "db_password" {
-  name        = "cogni-graph-db-password"
-  description = "Password for the CogniGraph RDS database managed by RDS"
-}
-
 resource "aws_secretsmanager_secret" "neo4j_password" {
   name        = "cogni-graph-neo4j-password"
   description = "Password for the Neo4j database"
