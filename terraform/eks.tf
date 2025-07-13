@@ -11,7 +11,7 @@ data "aws_subnets" "private" {
 resource "aws_eks_cluster" "main" {
   name     = "cogni-graph-eks"
   role_arn = aws_iam_role.eks_cluster.arn
-  version  = "1.30"
+  version  = "1.32"
 
   vpc_config {
     subnet_ids = module.vpc.private_subnets
@@ -45,6 +45,20 @@ resource "aws_eks_node_group" "main" {
     aws_iam_role_policy_attachment.eks_nodes_cni_policy,
     aws_iam_role_policy_attachment.eks_nodes_ecr_policy,
   ]
+
+  tags = {
+    Project = "cogni-graph"
+  }
+}
+
+data "tls_certificate" "eks_oidc" {
+  url = aws_eks_cluster.main.identity[0].oidc[0].issuer
+}
+
+resource "aws_iam_openid_connect_provider" "main" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks_oidc.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.main.identity[0].oidc[0].issuer
 
   tags = {
     Project = "cogni-graph"
