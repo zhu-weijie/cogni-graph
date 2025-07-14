@@ -31,9 +31,14 @@ graph TD
     D -- uses --> F
     E -- uses --> K
     E -- uses --> I
-
+    
     F -- uses --> H
     F -- uses --> I
 
     G -- uses --> J
+
+    A -- validates with --> G
+    C -- checks --> J
+    C -- checks --> I
+    F -- for KG extraction --> K
 ```
